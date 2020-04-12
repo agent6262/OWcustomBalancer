@@ -152,14 +152,30 @@ var OWAPI = {
 	
 	// returns array of objects (hero, playtime) sorted by playtime
 	parseHeroStats: function( heroes_node ) {
-		var hero_playtime = heroes_node.playtime.competitive;
+		var hero_playtime_comp = heroes_node.playtime.competitive;
+		var hero_playtime_qp = heroes_node.playtime.quickplay;
 		
 		var hero_playtime_sorted = [];
-		for (var hero_name in hero_playtime ) {
-			var current_hero_playtime = Math.round(hero_playtime[hero_name] * 100) / 100;
+		for (var hero_name in hero_playtime_comp ) {
+			console.log("comp");
+			var current_hero_playtime = Math.round(hero_playtime_comp[hero_name] * 100) / 100;
 			hero_playtime_sorted.push( { hero: hero_name, playtime: current_hero_playtime} );
 		}
-		
+		for (var hero_name in hero_playtime_qp) {
+			var current_hero_playtime = Math.round(hero_playtime_qp[hero_name] * 100) / 100;
+			var hasHero = false;
+			for(var val in hero_playtime_sorted) {
+				if(val.hero === name) {
+					val.playtime += current_hero_playtime;
+					hasHero = true;
+					break;
+				}
+			}
+			 if(!hasHero) {
+				hero_playtime_sorted.push( { hero: hero_name, playtime: current_hero_playtime} );
+			}
+		}
+
 		hero_playtime_sorted.sort( function(hero1, hero2) {
 				return hero2.playtime - hero1.playtime;
 			});
